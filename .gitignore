@@ -1,0 +1,19 @@
+bin/
+dist/
+/local
+.schemas
+
+# Coverage
+coverage/*
+coverage.txt
+
+# Benchmarks
+**/benchmark.txt
+benchmarks.txt
+
+# Wix
+*.wixobj
+*.wixpdb
+
+# golang
+go.work*

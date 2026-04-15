@@ -1,0 +1,95 @@
+display_name: HP Printers Receiver
+type: hp_printers
+deprecated_type: hpprinters
+
+description: |
+  The HP Printers Receiver can be used for scrape printing and toner metrics from HTTP(S) endpoints. 
+
+sem_conv_version: 1.40.0
+
+status:
+  class: receiver
+  stability:
+    development: [metrics]
+  distributions: []
+  warnings: []
+  codeowners:
+    active: [gtg-bantonio]
+    emeritus: []
+    seeking_new: false
+
+resource_attributes:
+  device.id:
+    description: The printer serial number
+    type: string
+    enabled: true
+  device.manufacturer:
+    description: The printer vendor. It always resolve to "HP"
+    type: string
+    enum: [HP]
+    enabled: true
+  device.model.identifier:
+    description: The printer model
+    type: string
+    enabled: true
+  device.model.name:
+    description: The printer marketing name for the model
+    type: string
+    enabled: true
+  host.ip:
+    description: The printer IP
+    type: string
+    enabled: true
+  host.name:
+    description: The printer host name
+    type: string
+    enabled: true
+
+attributes:
+  printer.cartridge.color:
+    description: The cartridge/toner color (must be one of cyan, magenta, yellow or black)
+    type: string
+    enum: [cyan, magenta, yellow, black]
+  printer.paper.size:
+    description: The printed paper size with standardized names (letter, legal, A4 or custom)
+    type: string
+
+metrics:
+  printer.cartridge.left:
+    description: Percent of cartridge left
+    enabled: true
+    stability: development
+    gauge:
+      value_type: int
+    unit: percent_100
+    attributes: [printer.cartridge.color]
+  printer.usage.copy:
+    description: Cumulative of pages copied
+    enabled: true
+    stability: development
+    sum:
+      value_type: int
+      aggregation_temporality: cumulative
+      monotonic: true
+    unit: "1"
+    attributes: [printer.paper.size]
+  printer.usage.print:
+    description: Cumulative of pages printed
+    enabled: true
+    stability: development
+    sum:
+      value_type: int
+      aggregation_temporality: cumulative
+      monotonic: true
+    unit: "1"
+    attributes: [printer.paper.size]
+  printer.usage.scan:
+    description: Cumulative of pages scanned
+    enabled: true
+    stability: development
+    sum:
+      value_type: int
+      aggregation_temporality: cumulative
+      monotonic: true
+    unit: "1"
+    attributes: [printer.paper.size]

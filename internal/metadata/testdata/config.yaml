@@ -1,0 +1,99 @@
+default:
+all_set:
+  metrics:
+    printer.cartridge.left:
+      enabled: true
+    printer.usage.copy:
+      enabled: true
+    printer.usage.print:
+      enabled: true
+    printer.usage.scan:
+      enabled: true
+  resource_attributes:
+    device.id:
+      enabled: true
+    device.manufacturer:
+      enabled: true
+    device.model.identifier:
+      enabled: true
+    device.model.name:
+      enabled: true
+    host.ip:
+      enabled: true
+    host.name:
+      enabled: true
+none_set:
+  metrics:
+    printer.cartridge.left:
+      enabled: false
+    printer.usage.copy:
+      enabled: false
+    printer.usage.print:
+      enabled: false
+    printer.usage.scan:
+      enabled: false
+  resource_attributes:
+    device.id:
+      enabled: false
+    device.manufacturer:
+      enabled: false
+    device.model.identifier:
+      enabled: false
+    device.model.name:
+      enabled: false
+    host.ip:
+      enabled: false
+    host.name:
+      enabled: false
+filter_set_include:
+  resource_attributes:
+    device.id:
+      enabled: true
+      metrics_include:
+        - regexp: ".*"
+    device.manufacturer:
+      enabled: true
+      metrics_include:
+        - regexp: ".*"
+    device.model.identifier:
+      enabled: true
+      metrics_include:
+        - regexp: ".*"
+    device.model.name:
+      enabled: true
+      metrics_include:
+        - regexp: ".*"
+    host.ip:
+      enabled: true
+      metrics_include:
+        - regexp: ".*"
+    host.name:
+      enabled: true
+      metrics_include:
+        - regexp: ".*"
+filter_set_exclude:
+  resource_attributes:
+    device.id:
+      enabled: true
+      metrics_exclude:
+        - strict: "device.id-val"
+    device.manufacturer:
+      enabled: true
+      metrics_exclude:
+        - strict: "HP"
+    device.model.identifier:
+      enabled: true
+      metrics_exclude:
+        - strict: "device.model.identifier-val"
+    device.model.name:
+      enabled: true
+      metrics_exclude:
+        - strict: "device.model.name-val"
+    host.ip:
+      enabled: true
+      metrics_exclude:
+        - strict: "host.ip-val"
+    host.name:
+      enabled: true
+      metrics_exclude:
+        - strict: "host.name-val"

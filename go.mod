@@ -1,4 +1,4 @@
-module hpprintersreceiver
+module github.com/GT-Logistics/opentelemetry-collector-hp-printers-receiver
 
 go 1.25.0
 

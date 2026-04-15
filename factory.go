@@ -3,9 +3,9 @@ package hpprintersreceiver
 import (
 	"context"
 	"errors"
-	"hpprintersreceiver/internal/metadata"
 	"time"
 
+	"github.com/GT-Logistics/opentelemetry-collector-hp-printers-receiver/internal/metadata"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/receiver"

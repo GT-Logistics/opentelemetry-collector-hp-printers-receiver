@@ -3,9 +3,9 @@ package hpprintersreceiver
 import (
 	"errors"
 	"fmt"
-	"hpprintersreceiver/internal/metadata"
 	"net/url"
 
+	"github.com/GT-Logistics/opentelemetry-collector-hp-printers-receiver/internal/metadata"
 	"go.opentelemetry.io/collector/config/confighttp"
 	"go.opentelemetry.io/collector/scraper/scraperhelper"
 	"go.uber.org/multierr"

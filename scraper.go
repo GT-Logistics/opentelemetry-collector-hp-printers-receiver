@@ -3,7 +3,6 @@ package hpprintersreceiver
 import (
 	"context"
 	"errors"
-	"hpprintersreceiver/internal/metadata"
 	"io"
 	"net/http"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/GT-Logistics/opentelemetry-collector-hp-printers-receiver/internal/metadata"
 	"github.com/PuerkitoBio/goquery"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/config/configopaque"

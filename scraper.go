@@ -49,6 +49,14 @@ type cartridge struct {
 	color metadata.AttributePrinterCartridgeColor
 }
 
+func cleanText(s string) string {
+	// Fields splits by any whitespace and ignores multiple spaces
+	parts := strings.Fields(s)
+
+	// Join back with a single space
+	return strings.Trim(strings.Join(parts, " "), " \r\n")
+}
+
 func makeRequest(config clientConfig, url string) (body io.ReadCloser, err error) {
 	req, err := http.NewRequestWithContext(
 		config.ctx,
@@ -72,7 +80,7 @@ func makeRequest(config clientConfig, url string) (body io.ReadCloser, err error
 
 	// Read response body and return to client
 	body = resp.Body
-	if body != nil {
+	if body == nil {
 		err = errors.New("no response from server")
 	}
 
@@ -99,9 +107,9 @@ func scrapeDeviceInfo(config clientConfig) (deviceModelName string, deviceModelI
 		return
 	}
 
-	deviceModelName = doc.Find("#ProductName").Text()
-	deviceModelIdentifier = doc.Find("#DeviceModel").Text()
-	deviceId = doc.Find("#DeviceSerialNumber").Text()
+	deviceModelName = cleanText(doc.Find("#ProductName").Text())
+	deviceModelIdentifier = cleanText(doc.Find("#DeviceModel").Text())
+	deviceId = cleanText(doc.Find("#DeviceSerialNumber").Text())
 
 	return
 }
@@ -112,9 +120,10 @@ func scrapeHostInfo(config clientConfig) (hostName string, hostIp string, err er
 		return
 	}
 
-	hostName = strings.Split(doc.Find("#HostName").Text(), " : ")[1]
-	hostIpV4 := doc.Find("#addrta tbody > tr:nth-child(1) > td:nth-child(2)").Text()
-	hostIpV6 := doc.Find("#IPv6AddrLst tbody > tr > td:nth-child(1)").Text()
+	hostName = cleanText(doc.Find("#HostName").Text())
+	hostName = strings.Split(hostName, " : ")[1]
+	hostIpV4 := cleanText(doc.Find("#addrta tbody > tr:nth-child(1) > td:nth-child(2)").Text())
+	hostIpV6 := cleanText(doc.Find("#IPv6AddrLst tbody > tr > td:nth-child(1)").Text())
 	hostIp = hostIpV4 + "," + hostIpV6
 
 	return
@@ -127,7 +136,7 @@ func scrapeCartridgeInfo(config clientConfig) (cartridges []cartridge, err error
 	}
 
 	doc.Find(".toner.consumable-block-black").Each(func(_ int, s *goquery.Selection) {
-		percentage := s.Find(".percentage").Text()
+		percentage := cleanText(s.Find(".percentage").Text())
 		idx := strings.Index(percentage, "%")
 
 		if idx == -1 {
@@ -164,7 +173,7 @@ func scrapeUsageInfo(config clientConfig) (printUsage []usage, copyUsage []usage
 
 func scrapeUsageData(document *goquery.Document, selector string) (data []usage) {
 	document.Find(selector).Each(func(_ int, s *goquery.Selection) {
-		paperSize := s.Find("td:first-child").Text()
+		paperSize := cleanText(s.Find("td:first-child").Text())
 		idx := strings.Index(paperSize, " (")
 
 		if idx == -1 {
@@ -172,7 +181,7 @@ func scrapeUsageData(document *goquery.Document, selector string) (data []usage)
 		}
 
 		paperSize = paperSize[:idx]
-		quantity := s.Find("td:last-child").Text()
+		quantity := cleanText(s.Find("td:last-child").Text())
 		intQuantity, err := strconv.ParseInt(quantity, 10, 64)
 		if err != nil {
 			return

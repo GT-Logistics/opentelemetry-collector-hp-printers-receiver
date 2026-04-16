@@ -123,7 +123,7 @@ func scrapeHostInfo(config clientConfig) (hostName string, hostIp string, err er
 
 	hostName = cleanText(doc.Find("#HostName").Text())
 	hostName = strings.Split(hostName, " : ")[1]
-	hostIpV4 := cleanText(doc.Find("#addrta tbody > tr:nth-child(1) > td:nth-child(2)").Text())
+	hostIpV4 := cleanText(doc.Find("#addrta tbody > tr:nth-child(1) > td:nth-child(3)").Text())
 	hostIpV6 := cleanText(doc.Find("#IPv6AddrLst tbody > tr > td:nth-child(1)").Text())
 	hostIp = hostIpV4 + "," + hostIpV6
 
@@ -165,8 +165,8 @@ func scrapeUsageInfo(config clientConfig) (printUsage []usage, copyUsage []usage
 		return
 	}
 
-	printUsage = scrapeUsageData(doc, "[id^=UsagePage.ImpressionsByMediaSizeTable]:nth-child(1) tbody > tr")
-	copyUsage = scrapeUsageData(doc, "[id^=UsagePage.ImpressionsByMediaSizeTable]:nth-child(2) tbody > tr")
+	printUsage = scrapeUsageData(doc, "#UsagePage.ImpressionsByMediaSizeTable.TableTitle.Print tbody > tr")
+	copyUsage = scrapeUsageData(doc, "#UsagePage.ImpressionsByMediaSizeTable.TableTitle.Copy tbody > tr")
 	printUsage = scrapeUsageData(doc, "#UsagePage.ScanBySizeTable tbody > tr")
 
 	return

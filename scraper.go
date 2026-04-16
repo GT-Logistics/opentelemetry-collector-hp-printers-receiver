@@ -165,9 +165,9 @@ func scrapeUsageInfo(config clientConfig) (printUsage []usage, copyUsage []usage
 		return
 	}
 
-	printUsage = scrapeUsageData(doc, "#UsagePage.ImpressionsByMediaSizeTable.TableTitle.Print tbody > tr")
-	copyUsage = scrapeUsageData(doc, "#UsagePage.ImpressionsByMediaSizeTable.TableTitle.Copy tbody > tr")
-	printUsage = scrapeUsageData(doc, "#UsagePage.ScanBySizeTable tbody > tr")
+	printUsage = scrapeUsageData(doc, "#UsagePage\\.ImpressionsByMediaSizeTable\\.TableTitle.Print tbody > tr")
+	copyUsage = scrapeUsageData(doc, "#UsagePage\\.ImpressionsByMediaSizeTable\\.TableTitle.Copy tbody > tr")
+	printUsage = scrapeUsageData(doc, "#UsagePage\\.ScanBySizeTable tbody > tr")
 
 	return
 }

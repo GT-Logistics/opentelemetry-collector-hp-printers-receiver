@@ -30,8 +30,9 @@ func createDefaultConfig() component.Config {
 	cfg.CollectionInterval = 60 * time.Second
 
 	return &Config{
-		ControllerConfig: cfg,
-		Targets:          []*targetConfig{},
+		ControllerConfig:     cfg,
+		MetricsBuilderConfig: metadata.DefaultMetricsBuilderConfig(),
+		Targets:              []*targetConfig{},
 	}
 }
 

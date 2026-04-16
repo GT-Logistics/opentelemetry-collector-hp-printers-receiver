@@ -30,6 +30,7 @@ type hpprintersScraper struct {
 	cfg      *Config
 	settings component.TelemetrySettings
 	mb       *metadata.MetricsBuilder
+	rb       *metadata.ResourceBuilder
 }
 
 type clientConfig struct {
@@ -242,8 +243,6 @@ func (h *hpprintersScraper) scrape(ctx context.Context) (pmetric.Metrics, error)
 		return pmetric.NewMetrics(), errClientNotInit
 	}
 
-	rb := h.mb.NewResourceBuilder()
-
 	var wg sync.WaitGroup
 	wg.Add(len(h.clients))
 	var mux sync.Mutex
@@ -286,13 +285,13 @@ func (h *hpprintersScraper) scrape(ctx context.Context) (pmetric.Metrics, error)
 
 			mux.Lock()
 
-			rb.SetDeviceID(deviceId)
-			rb.SetDeviceManufacturerHP()
-			rb.SetDeviceModelIdentifier(deviceModelIdentifier)
-			rb.SetDeviceModelName(deviceModelName)
-			rb.SetHostIP(hostIp)
-			rb.SetHostName(hostName)
-			r := rb.Emit()
+			h.rb.SetDeviceID(deviceId)
+			h.rb.SetDeviceManufacturerHP()
+			h.rb.SetDeviceModelIdentifier(deviceModelIdentifier)
+			h.rb.SetDeviceModelName(deviceModelName)
+			h.rb.SetHostIP(hostIp)
+			h.rb.SetHostName(hostName)
+			r := h.rb.Emit()
 
 			for _, cartridge := range cartridges {
 				h.mb.RecordPrinterCartridgeLeftDataPoint(now, cartridge.left, cartridge.color)
@@ -324,5 +323,6 @@ func newScraper(conf *Config, settings receiver.Settings) *hpprintersScraper {
 		cfg:      conf,
 		settings: settings.TelemetrySettings,
 		mb:       metadata.NewMetricsBuilder(conf.MetricsBuilderConfig, settings),
+		rb:       metadata.NewResourceBuilder(conf.ResourceAttributes),
 	}
 }
